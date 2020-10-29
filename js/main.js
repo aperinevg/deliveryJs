@@ -16,7 +16,7 @@ const restaurants = document.querySelector('.restaurants');
 const logo = document.querySelector('.logo');
 const cardsMenu = document.querySelector('.cards-menu');
 
-
+let adc =[];
 let login = localStorage.getItem('login');
 
 
