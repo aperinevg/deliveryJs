@@ -15,7 +15,10 @@ const containerPromo = document.querySelector('.container-promo');
 const restaurants = document.querySelector('.restaurants');
 const logo = document.querySelector('.logo');
 const cardsMenu = document.querySelector('.cards-menu');
-// const menuHeading = document.querySelector('.menu-heading');
+const restaurantTitle = document.querySelector('.restaurant-title');
+const restaurantRating = document.querySelector('.rating')
+const restaurantPrice = document.querySelector('.price')
+const restaurantCategory = document.querySelector('.category') 
 
 
 let login = localStorage.getItem('login');
@@ -105,8 +108,15 @@ function checkAuth () {
 function createCardRestaurant (restaurant){
   const { image, kitchen, name, price, products, stars, time_of_delivery: timeOfDelivery } = restaurant
   
+
+  const cardRestaurant = document.createElement('a');
+  cardRestaurant.className = "card card-restaurant";
+  cardRestaurant.products = products;
+  cardRestaurant.info = {kitchen, name, price, stars};
+
+
   const card = `
-    <a  class="card card-restaurant" data-products="${products}">
+    
       <img src=${image} alt="image" class="card-image"/>
       <div class="card-text">
         <div class="card-heading">
@@ -123,9 +133,10 @@ function createCardRestaurant (restaurant){
         </div>
         
       </div>
-    </a>
+    
  `
- cardRestaurants.insertAdjacentHTML('beforeend', card);
+ cardRestaurant.insertAdjacentHTML('beforeend', card)
+ cardRestaurants.insertAdjacentElement('beforeend', cardRestaurant);
 }
 
 
@@ -178,7 +189,16 @@ function openGoods(event) {
       menu.classList.remove('hide');
       containerPromo.classList.add('hide');
       restaurants.classList.add('hide');
-      getData(`./db/${restaurant.dataset.products}`).then(function(data){
+
+      const { name, kitchen, price, stars } = restaurant.info;
+      
+      
+      restaurantTitle.textContent = name;
+      restaurantRating.textContent = stars;
+      restaurantPrice.textContent = `От ${price} Р`;
+      restaurantCategory.textContent = kitchen;
+
+      getData(`./db/${restaurant.products}`).then(function(data){
         data.forEach(createCardsGood)
       })
 
